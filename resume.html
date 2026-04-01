@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>一鸣 — 全栈工程师</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black: #000000;
+      --white: #ffffff;
+      --yellow: #FFD43B;
+      --pink: #FF6B9D;
+      --blue: #4DABF7;
+      --green: #69DB7C;
+      --orange: #FFA94D;
+      --purple: #B197FC;
+      --red: #FF6B6B;
+      --bg: #F5F0EB;
+      --shadow: 5px 5px 0px var(--black);
+      --shadow-lg: 8px 8px 0px var(--black);
+      --border: 3px solid var(--black);
+      --border-thick: 4px solid var(--black);
+      --radius: 0px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans SC', 'Space Mono', monospace;
+      background-color: var(--bg);
+      color: var(--black);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    /* Header */
+    .header {
+      background: var(--yellow);
+      border: var(--border-thick);
+      box-shadow: var(--shadow-lg);
+      padding: 48px 40px;
+      margin-bottom: 32px; 
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      background: var(--pink);
+      border: var(--border);
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      right: 80px;
+      width: 80px;
+      height: 80px;
+      background: var(--blue);
+      border: var(--border);
+      z-index: 0;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .name {
+      font-size: 4rem;
+      font-weight: 900;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .title-badge {
+      display: inline-block;
+      background: var(--black);
+      color: var(--white);
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 8px 20px;
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .meta-tag {
+      background: var(--white);
+      border: var(--border);
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      box-shadow: 3px 3px 0 var(--black);
+      transition: transform 0.15s, box-shadow 0.15s;
+      cursor: default;
+    }
+
+    .meta-tag:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--black);
+    }
+
+    /* Section Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .grid-full {
+      grid-column: 1 / -1;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--white);
+      border: var(--border-thick);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 11px 11px 0px var(--black);
+    }
+
+    .card-yellow { background: var(--yellow); }
+    .card-pink { background: var(--pink); }
+    .card-blue { background: var(--blue); }
+    .card-green { background: var(--green); }
+    .card-orange { background: var(--orange); }
+    .card-purple { background: var(--purple); }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 900;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--black);
+      color: var(--white);
+      font-size: 1rem;
+      border: none;
+      flex-shrink: 0;
+    }
+
+    /* About */
+    .about-text {
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .skill-pill {
+      background: var(--white);
+      border: var(--border);
+      padding: 6px 16px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      box-shadow: 3px 3px 0 var(--black);
+      transition: all 0.15s;
+      cursor: default;
+    }
+
+    .skill-pill:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--black);
+    }
+
+    .skill-pill.highlight {
+      background: var(--yellow);
+    }
+
+    .skill-category {
+      font-weight: 900;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      margin-top: 18px;
+    }
+
+    .skill-category:first-child {
+      margin-top: 0;
+    }
+
+    /* Experience */
+    .exp-item {
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 3px dashed var(--black);
+    }
+
+    .exp-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .exp-role {
+      font-size: 1.15rem;
+      font-weight: 900;
+    }
+
+    .exp-company {
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    .exp-date {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      white-space: nowrap;
+    }
+
+    .exp-desc {
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .exp-desc li {
+      margin-bottom: 6px;
+      margin-left: 18px;
+    }
+
+    /* Projects */
+    .project-item {
+      background: var(--bg);
+      border: var(--border);
+      padding: 18px;
+      margin-bottom: 14px;
+      box-shadow: 3px 3px 0 var(--black);
+      transition: all 0.15s;
+    }
+
+    .project-item:last-child { margin-bottom: 0; }
+
+    .project-item:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--black);
+    }
+
+    .project-name {
+      font-size: 1.05rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .project-desc {
+      font-size: 0.88rem;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .project-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border: 2px solid var(--black);
+      background: var(--white);
+    }
+
+    /* Education */
+    .edu-item {
+      margin-bottom: 16px;
+    }
+
+    .edu-item:last-child { margin-bottom: 0; }
+
+    .edu-school {
+      font-weight: 900;
+      font-size: 1.05rem;
+    }
+
+    .edu-degree {
+      font-size: 0.9rem;
+      margin-top: 2px;
+    }
+
+    .edu-year {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #555;
+    }
+
+    /* Marquee */
+    .marquee-wrapper {
+      overflow: hidden;
+      background: var(--black);
+      border: var(--border-thick);
+      padding: 14px 0;
+      margin-bottom: 24px;
+    }
+
+    .marquee {
+      display: flex;
+      animation: scroll 20s linear infinite;
+      width: max-content;
+    }
+
+    .marquee span {
+      color: var(--white);
+      font-weight: 900;
+      font-size: 1.2rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding: 0 40px;
+    }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 32px;
+      margin-top: 12px;
+      background: var(--black);
+      border: var(--border-thick);
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      box-shadow: var(--shadow);
+    }
+
+    .footer a {
+      color: var(--yellow);
+      text-decoration: none;
+      font-weight: 700;
+      border-bottom: 2px solid var(--yellow);
+    }
+
+    /* Responsive */
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+      .name { font-size: 2.8rem; }
+      .header { padding: 32px 24px; }
+      .card { padding: 22px; }
+      .exp-header { flex-direction: column; }
+    }
+
+    /* Deco Shapes */
+    .deco-bar {
+      height: 14px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--black) 0px,
+        var(--black) 14px,
+        var(--yellow) 14px,
+        var(--yellow) 28px
+      );
+      border: var(--border);
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="header-content">
+        <div class="name">一鸣</div>
+        <div class="title-badge">Full-Stack Engineer</div>
+        <p style="font-size:1.05rem; font-weight:700; max-width:520px;">
+          热爱构建优雅且高性能的 Web 应用，从像素到数据库，全链路交付。
+        </p>
+        <div class="header-meta">
+          <span class="meta-tag">📍 北京</span>
+          <span class="meta-tag">✉ yiming@email.com</span>
+          <span class="meta-tag">🔗 github.com/yiming</span>
+          <span class="meta-tag">📱 +86 138-0000-0000</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Marquee -->
+    <div class="marquee-wrapper">
+      <div class="marquee">
+        <span>React · Node.js · TypeScript · Go · PostgreSQL · Docker · AWS · Next.js · Redis · GraphQL ·&nbsp;</span>
+        <span>React · Node.js · TypeScript · Go · PostgreSQL · Docker · AWS · Next.js · Redis · GraphQL ·&nbsp;</span>
+      </div>
+    </div>
+
+    <!-- Deco Bar -->
+    <div class="deco-bar"></div>
+
+    <!-- About + Skills -->
+    <div class="grid">
+      <div class="card card-green">
+        <div class="section-title">
+          <span class="section-icon">★</span> 关于我
+        </div>
+        <p class="about-text">
+          拥有 5 年以上全栈开发经验，专注于高并发分布式系统和现代前端架构。擅长从 0 到 1 打造产品，对代码质量与用户体验有极致追求。开源爱好者，乐于分享技术、参与社区贡献。
+        </p>
+      </div>
+
+      <div class="card card-blue">
+        <div class="section-title">
+          <span class="section-icon">⚡</span> 技术栈
+        </div>
+        <div class="skill-category">前端</div>
+        <div class="skills-grid">
+          <span class="skill-pill highlight">React</span>
+          <span class="skill-pill highlight">Next.js</span>
+          <span class="skill-pill">Vue</span>
+          <span class="skill-pill highlight">TypeScript</span>
+          <span class="skill-pill">Tailwind CSS</span>
+          <span class="skill-pill">Three.js</span>
+        </div>
+        <div class="skill-category">后端</div>
+        <div class="skills-grid">
+          <span class="skill-pill highlight">Node.js</span>
+          <span class="skill-pill highlight">Go</span>
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">GraphQL</span>
+          <span class="skill-pill">gRPC</span>
+        </div>
+        <div class="skill-category">基础设施</div>
+        <div class="skills-grid">
+          <span class="skill-pill highlight">PostgreSQL</span>
+          <span class="skill-pill">Redis</span>
+          <span class="skill-pill highlight">Docker</span>
+          <span class="skill-pill">Kubernetes</span>
+          <span class="skill-pill highlight">AWS</span>
+          <span class="skill-pill">CI/CD</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience -->
+    <div class="grid">
+      <div class="card grid-full">
+        <div class="section-title">
+          <span class="section-icon">⬤</span> 工作经历
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div>
+              <div class="exp-role">高级全栈工程师</div>
+              <div class="exp-company">字节跳动 · 基础架构部</div>
+            </div>
+            <span class="exp-date">2023.03 — 至今</span>
+          </div>
+          <ul class="exp-desc">
+            <li>主导设计并实现内部微服务网关，日均处理 2 亿+ 请求，P99 延迟 < 15ms</li>
+            <li>从零搭建前端监控平台，集成错误追踪、性能分析与告警系统</li>
+            <li>推动团队从 JavaScript 向 TypeScript 迁移，覆盖率提升至 95%</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div>
+              <div class="exp-role">全栈工程师</div>
+              <div class="exp-company">阿里巴巴 · 新零售事业群</div>
+            </div>
+            <span class="exp-date">2021.06 — 2023.02</span>
+          </div>
+          <ul class="exp-desc">
+            <li>负责电商会员系统前后端开发，服务千万级用户，会员转化率提升 32%</li>
+            <li>使用 React + Node.js 构建商家后台管理系统，模块化设计支持多业务线接入</li>
+            <li>设计高可用消息队列架构，保障大促期间系统稳定运行</li>
+          </ul>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div>
+              <div class="exp-role">前端开发工程师</div>
+              <div class="exp-company">美团 · 到店事业部</div>
+            </div>
+            <span class="exp-date">2020.07 — 2021.05</span>
+          </div>
+          <ul class="exp-desc">
+            <li>参与商家端 SaaS 平台开发，基于 Vue + Nuxt 实现 SSR 优化，首屏加载提速 40%</li>
+            <li>封装通用业务组件库，减少跨团队重复开发，提升 30% 交付效率</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Projects + Education -->
+    <div class="grid">
+      <div class="card card-orange">
+        <div class="section-title">
+          <span class="section-icon">◆</span> 项目作品
+        </div>
+
+        <div class="project-item">
+          <div class="project-name">DevPulse</div>
+          <div class="project-desc">开源实时协作开发平台，支持多人在线编辑代码、即时通讯与项目管理，已获 2.3k GitHub Stars。</div>
+          <div class="project-tags">
+            <span class="project-tag">Next.js</span>
+            <span class="project-tag">WebSocket</span>
+            <span class="project-tag">Go</span>
+            <span class="project-tag">PostgreSQL</span>
+          </div>
+        </div>
+
+        <div class="project-item">
+          <div class="project-name">QuickDeploy</div>
+          <div class="project-desc">一键部署 CLI 工具，支持将前端项目自动打包并部署至 AWS / Vercel / 自建服务器。</div>
+          <div class="project-tags">
+            <span class="project-tag">Node.js</span>
+            <span class="project-tag">Docker</span>
+            <span class="project-tag">CLI</span>
+          </div>
+        </div>
+
+        <div class="project-item">
+          <div class="project-name">InstaMetrics</div>
+          <div class="project-desc">轻量级前端性能监控 SDK，自动采集 Core Web Vitals 并生成可视化报告。</div>
+          <div class="project-tags">
+            <span class="project-tag">TypeScript</span>
+            <span class="project-tag">Rollup</span>
+            <span class="project-tag">D3.js</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-purple">
+        <div class="section-title">
+          <span class="section-icon">▲</span> 教育背景
+        </div>
+
+        <div class="edu-item">
+          <div class="edu-school">北京大学</div>
+          <div class="edu-degree">计算机科学与技术 · 硕士</div>
+          <div class="edu-year">2018 — 2020</div>
+        </div>
+
+        <div class="edu-item" style="margin-top:24px;">
+          <div class="edu-school">浙江大学</div>
+          <div class="edu-degree">软件工程 · 学士</div>
+          <div class="edu-year">2014 — 2018</div>
+        </div>
+
+        <div style="margin-top:32px; padding-top:20px; border-top:3px dashed var(--black);">
+          <div class="section-title" style="font-size:1.2rem;">
+            <span class="section-icon">♦</span> 其他亮点
+          </div>
+          <ul style="font-size:0.9rem; line-height:1.9; margin-left:18px;">
+            <li>技术博客累计 10 万+ 阅读量</li>
+            <li>掘金年度优秀创作者</li>
+            <li>开源项目累计 5k+ Stars</li>
+            <li>英语流利 · CET-6 620</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p>DESIGNED WITH ♥ AND <span style="color:var(--yellow);">NEOBRUTALISM</span></p>
+      <p style="margin-top:8px; opacity:0.7;">yiming@email.com · github.com/yiming · 2026</p>
+    </div>
+
+  </div>
+</body>
+</html>
